@@ -14,7 +14,7 @@ from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 Environment = Literal["development", "staging", "production"]
-LLMProvider = Literal["openai", "anthropic", "gemini", "groq", "ollama"]
+LLMProvider = Literal["openai", "anthropic", "gemini", "groq", "ollama", "stub"]
 
 
 class Settings(BaseSettings):

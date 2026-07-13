@@ -86,6 +86,13 @@ def get_llm(
     """
     provider = provider or settings.llm_provider
     model = model or settings.llm_model
+
+    # Dependency-free stub for local demos / tests (no API key, no network).
+    if provider == "stub":
+        from app.core.stub_llm import StubChatModel
+
+        return StubChatModel()  # type: ignore[return-value]
+
     primary = _build_model(provider, model, **kwargs)
 
     if not with_fallback:

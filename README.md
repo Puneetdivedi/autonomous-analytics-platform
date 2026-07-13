@@ -206,6 +206,17 @@ docker compose up --build
 - Frontend → http://localhost:5173
 - LangFuse → http://localhost:3000
 
+### Try it with no API key (stub LLM)
+
+Set `LLM_PROVIDER=stub` to run the **entire agent graph** without any provider
+key — the stub returns deterministic, schema-valid outputs by reading the real
+schema/rows/statistics from each prompt, so SQL executes against your data and
+charts/reports are generated for real. Great for demos, CI, and tests.
+
+```bash
+LLM_PROVIDER=stub uvicorn app.main:app --reload
+```
+
 ### Local dev (backend)
 
 ```bash
