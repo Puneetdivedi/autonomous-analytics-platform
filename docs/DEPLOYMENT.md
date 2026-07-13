@@ -72,6 +72,33 @@ Every push to `main` that touches `frontend/**` then builds and deploys to prod.
 ## 2. Deploy the backend (container)
 
 The backend image is defined by [`backend/Dockerfile`](../backend/Dockerfile).
+Two turnkey paths are committed:
+
+### Option A — Render (one click, includes Postgres)
+
+A blueprint is committed at [`render.yaml`](../render.yaml): a Docker web service
++ a free Postgres, migrations on deploy, CORS pre-pointed at the Vercel frontend,
+and `LLM_PROVIDER=stub` so it works with **no API key**.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Puneetdivedi/autonomous-analytics-platform)
+
+1. Click the button (or Render dashboard → **New + → Blueprint** → pick the repo).
+2. Render provisions Postgres, builds the image, runs `alembic upgrade head`, and
+   serves it — you get `https://eaap-backend.onrender.com`.
+3. For real LLM answers, add `OPENAI_API_KEY` and set `LLM_PROVIDER=openai` in the
+   service's Environment tab.
+
+> Free Postgres/instances sleep when idle (≈50 s cold start) and the filesystem is
+> ephemeral (uploads reset on redeploy) — fine for a demo; use paid plans + a disk
+> for anything real.
+
+### Option B — Fly.io
+
+Config at [`backend/fly.toml`](../backend/fly.toml) (Postgres attach, release-time
+migrations, a persistent `/data` volume). Commands are in the file header:
+`fly launch --no-deploy` → `fly postgres create/attach` → `fly secrets set …` → `fly deploy`.
+
+### Manual container (any host)
 
 ### Provision managed data services
 

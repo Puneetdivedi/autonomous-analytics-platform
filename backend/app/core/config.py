@@ -89,6 +89,21 @@ class Settings(BaseSettings):
     def _strip_origins(cls, v: str) -> str:
         return v.strip()
 
+    @field_validator("database_url")
+    @classmethod
+    def _normalize_database_url(cls, v: str) -> str:
+        """Accept the DSNs managed hosts hand out (Render/Neon/Heroku style).
+
+        Those emit ``postgres://…`` with no driver; SQLAlchemy's async engine
+        needs the asyncpg driver spelled out explicitly.
+        """
+        if v.startswith("postgres://"):
+            v = "postgresql://" + v[len("postgres://") :]
+        scheme, sep, rest = v.partition("://")
+        if scheme == "postgresql" and sep:
+            v = "postgresql+asyncpg://" + rest
+        return v
+
     @property
     def cors_origins(self) -> list[str]:
         return [o.strip() for o in self.backend_cors_origins.split(",") if o.strip()]
