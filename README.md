@@ -6,16 +6,17 @@
 > queries, running statistics, generating charts, producing insights, recommending
 > actions, and generating downloadable reports — with full LangFuse observability.
 
-**🔗 Live demos (self-contained, no backend / no API key).** Two static pages you can
-host on any static host — a GitHub Pages workflow is included
-([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)):
+**🔗 Live demos** (hosted on GitHub Pages — self-contained, no backend / no API key):
 
-- **Working app** — upload a CSV and watch the pipeline run: [`docs/analyzer.html`](docs/analyzer.html)
-- **Observability dashboard** — snapshot of a traced run: [`docs/dashboard.html`](docs/dashboard.html)
+- **▶ Working app** — upload a CSV and watch the pipeline run:
+  **https://puneetdivedi.github.io/autonomous-analytics-platform/analyzer.html**
+- **📊 Observability dashboard** — snapshot of a traced run:
+  **https://puneetdivedi.github.io/autonomous-analytics-platform/dashboard.html**
+- **Landing page:** https://puneetdivedi.github.io/autonomous-analytics-platform/
 
-Once GitHub Pages is enabled, they're served at
-`https://<your-user>.github.io/<repo>/analyzer.html` and `/dashboard.html`.
-See [Hosting the demos](docs/DEPLOYMENT.md#4-hosting-the-static-demo-pages).
+Auto-deployed on every push via
+[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
+Sources: [`docs/analyzer.html`](docs/analyzer.html), [`docs/dashboard.html`](docs/dashboard.html).
 
 ---
 
