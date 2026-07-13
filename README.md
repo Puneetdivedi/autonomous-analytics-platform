@@ -13,6 +13,9 @@
 - **📊 Observability dashboard** — snapshot of a traced run:
   **https://puneetdivedi.github.io/autonomous-analytics-platform/dashboard.html**
 - **Landing page:** https://puneetdivedi.github.io/autonomous-analytics-platform/
+- **🚀 Full React app (Vercel):** https://autonomous-analytics-frontend.vercel.app
+  — the real product UI. Loads standalone; set `VITE_API_BASE_URL` to a deployed
+  backend (see [Deployment](docs/DEPLOYMENT.md)) to enable login and live analysis.
 
 Auto-deployed on every push via
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
