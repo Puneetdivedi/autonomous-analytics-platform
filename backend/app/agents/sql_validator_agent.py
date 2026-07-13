@@ -29,14 +29,9 @@ class SQLValidatorAgent(BaseAgent[SQLValidation]):
             f"Candidate SQL to review:\n{sql}",
         ]
         if relevant_tables:
-            parts.append(
-                "Intended tables:\n" + json.dumps(relevant_tables, default=str)
-            )
+            parts.append("Intended tables:\n" + json.dumps(relevant_tables, default=str))
         parts.append(
-            "Schema (tables -> columns) — ground truth:\n"
-            + json.dumps(schema, default=str)[:8000]
+            "Schema (tables -> columns) — ground truth:\n" + json.dumps(schema, default=str)[:8000]
         )
-        parts.append(
-            "Return the SQLValidation verdict. Enforce single read-only SELECT + LIMIT."
-        )
+        parts.append("Return the SQLValidation verdict. Enforce single read-only SELECT + LIMIT.")
         return "\n\n".join(parts)

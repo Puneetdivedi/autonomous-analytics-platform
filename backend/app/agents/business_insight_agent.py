@@ -36,15 +36,10 @@ class BusinessInsightAgent(BaseAgent[Insights]):
             + json.dumps(sample, default=str)[:4000]
         )
         if statistics:
-            parts.append(
-                "Statistics:\n" + json.dumps(statistics, default=str)[:6000]
-            )
+            parts.append("Statistics:\n" + json.dumps(statistics, default=str)[:6000])
         if charts:
             # Include only chart metadata, not embedded image payloads.
-            meta = [
-                {k: c.get(k) for k in ("type", "title", "x", "y") if k in c}
-                for c in charts
-            ]
+            meta = [{k: c.get(k) for k in ("type", "title", "x", "y") if k in c} for c in charts]
             parts.append("Charts prepared:\n" + json.dumps(meta, default=str)[:2000])
         parts.append("Return the structured Insights.")
         return "\n\n".join(parts)

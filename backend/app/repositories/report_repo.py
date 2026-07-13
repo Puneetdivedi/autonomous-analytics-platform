@@ -14,9 +14,7 @@ class ReportRepository(BaseRepository[Report]):
     async def list_for_project(self, project_id: str) -> list[Report]:
         """Return all reports for ``project_id`` newest first."""
         stmt = (
-            select(Report)
-            .where(Report.project_id == project_id)
-            .order_by(Report.created_at.desc())
+            select(Report).where(Report.project_id == project_id).order_by(Report.created_at.desc())
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all())

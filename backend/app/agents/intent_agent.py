@@ -26,8 +26,7 @@ class IntentAgent(BaseAgent[Intent]):
         parts = [f"User question:\n{question}"]
         if schema:
             parts.append(
-                "Available schema (tables -> columns):\n"
-                + json.dumps(schema, default=str)[:4000]
+                "Available schema (tables -> columns):\n" + json.dumps(schema, default=str)[:4000]
             )
         if memory:
             parts.append(

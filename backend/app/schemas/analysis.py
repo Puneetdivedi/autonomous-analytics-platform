@@ -14,9 +14,9 @@ from pydantic import BaseModel, Field
 
 # --- Intent ---
 class Intent(BaseModel):
-    type: Literal[
-        "descriptive", "diagnostic", "comparative", "trend", "forecast", "adhoc"
-    ] = "adhoc"
+    type: Literal["descriptive", "diagnostic", "comparative", "trend", "forecast", "adhoc"] = (
+        "adhoc"
+    )
     entities: list[str] = Field(default_factory=list)
     metrics: list[str] = Field(default_factory=list)
     time_range: str | None = None

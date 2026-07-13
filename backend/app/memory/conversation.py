@@ -33,9 +33,7 @@ class ConversationMemory:
         client = get_redis()
         if client is None:
             return False
-        entry = json.dumps(
-            {"role": role, "content": content, "ts": time.time()}
-        )
+        entry = json.dumps({"role": role, "content": content, "ts": time.time()})
         key = self._key(chat_id)
         try:
             pipe = client.pipeline()

@@ -30,10 +30,6 @@ class RecommendationAgent(BaseAgent[RecommendationSet]):
         if insights:
             parts.append("Insights:\n" + json.dumps(insights, default=str)[:5000])
         if statistics:
-            parts.append(
-                "Supporting statistics:\n" + json.dumps(statistics, default=str)[:4000]
-            )
-        parts.append(
-            "Return a RecommendationSet ordered highest to lowest priority."
-        )
+            parts.append("Supporting statistics:\n" + json.dumps(statistics, default=str)[:4000])
+        parts.append("Return a RecommendationSet ordered highest to lowest priority.")
         return "\n\n".join(parts)

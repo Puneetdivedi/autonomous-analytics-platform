@@ -30,12 +30,9 @@ class SQLGeneratorAgent(BaseAgent[GeneratedSQL]):
             parts.append("Detected intent:\n" + json.dumps(intent, default=str))
         if relevant_tables:
             parts.append(
-                "Relevant tables to build around:\n"
-                + json.dumps(relevant_tables, default=str)
+                "Relevant tables to build around:\n" + json.dumps(relevant_tables, default=str)
             )
-        parts.append(
-            "Schema (tables -> columns):\n" + json.dumps(schema, default=str)[:8000]
-        )
+        parts.append("Schema (tables -> columns):\n" + json.dumps(schema, default=str)[:8000])
         # Surface reflection feedback so a retry can correct the previous query.
         reflection = state.get("reflection", {})
         if reflection.get("feedback"):

@@ -29,8 +29,7 @@ def estimate_cost(model: str, usage: TokenUsage) -> float:
     """Estimate USD cost for a completion given model and token usage."""
     in_rate, out_rate = _PRICING.get(model, (0.0, 0.0))
     return round(
-        (usage.prompt_tokens / 1000) * in_rate
-        + (usage.completion_tokens / 1000) * out_rate,
+        (usage.prompt_tokens / 1000) * in_rate + (usage.completion_tokens / 1000) * out_rate,
         6,
     )
 

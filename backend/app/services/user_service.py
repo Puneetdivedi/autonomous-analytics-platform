@@ -22,9 +22,7 @@ class UserService:
 
     async def list(self, *, limit: int = 100, offset: int = 0) -> list[User]:
         """Return a page of users (admin use)."""
-        return await self.users.list(
-            limit=limit, offset=offset, order_by=User.created_at.desc()
-        )
+        return await self.users.list(limit=limit, offset=offset, order_by=User.created_at.desc())
 
     async def count(self) -> int:
         return await self.users.count()

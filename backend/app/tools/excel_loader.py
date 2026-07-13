@@ -41,7 +41,10 @@ def load_excel(
     sheet_name: str | int = 0 if sheet is None else sheet
     try:
         df = pd.read_excel(
-            file_path, sheet_name=sheet_name, engine="openpyxl", **kwargs  # type: ignore[arg-type]
+            file_path,
+            sheet_name=sheet_name,
+            engine="openpyxl",
+            **kwargs,  # type: ignore[arg-type]
         )
         logger.info(
             "excel_loaded",

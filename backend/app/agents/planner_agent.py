@@ -29,12 +29,9 @@ class PlannerAgent(BaseAgent[Plan]):
             parts.append("Detected intent:\n" + json.dumps(intent, default=str))
         if schema:
             parts.append(
-                "Available schema (tables -> columns):\n"
-                + json.dumps(schema, default=str)[:4000]
+                "Available schema (tables -> columns):\n" + json.dumps(schema, default=str)[:4000]
             )
         if memory:
-            parts.append(
-                "Conversation memory:\n" + json.dumps(memory, default=str)[:2000]
-            )
+            parts.append("Conversation memory:\n" + json.dumps(memory, default=str)[:2000])
         parts.append("Return the structured Plan.")
         return "\n\n".join(parts)

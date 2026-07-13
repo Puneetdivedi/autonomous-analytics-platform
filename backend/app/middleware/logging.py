@@ -16,9 +16,7 @@ logger = get_logger("app.access")
 class AccessLogMiddleware(BaseHTTPMiddleware):
     """Emit one structured log line per HTTP request."""
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         start = time.perf_counter()
         try:
             response = await call_next(request)

@@ -19,7 +19,7 @@ dependencies = [
     "redis>=5.0",
     "qdrant-client>=1.9",
     "python-jose[cryptography]>=3.3",
-    "passlib[bcrypt]>=1.7",
+    "bcrypt>=4.1",
     "python-multipart>=0.0.9",
     "email-validator>=2.1",
     "langchain>=0.2",
@@ -75,7 +75,11 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C4"]
-ignore = ["B008"]  # FastAPI Depends() in defaults
+ignore = [
+    "B008",   # FastAPI Depends() in argument defaults is intentional
+    "UP042",  # keep explicit (str, Enum) for broad tooling compatibility
+    "UP046",  # keep Generic[T] base classes (clearer than PEP 695 syntax here)
+]
 
 [tool.mypy]
 python_version = "3.12"

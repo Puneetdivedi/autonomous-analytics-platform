@@ -29,4 +29,4 @@ class Report(Base, UUIDMixin, TimestampMixin):
     # Structured summary used to render the report (insights, charts, stats).
     payload: Mapped[dict | None] = mapped_column(JSON)
 
-    project: Mapped["Project"] = relationship(back_populates="reports")
+    project: Mapped[Project] = relationship(back_populates="reports")

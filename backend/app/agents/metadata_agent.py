@@ -27,8 +27,7 @@ class MetadataAgent(BaseAgent[RelevantSchema]):
         if intent:
             parts.append("Detected intent:\n" + json.dumps(intent, default=str))
         parts.append(
-            "Full datasource schema (tables -> columns):\n"
-            + json.dumps(schema, default=str)[:8000]
+            "Full datasource schema (tables -> columns):\n" + json.dumps(schema, default=str)[:8000]
         )
         parts.append("Return the RelevantSchema (tables that must be used).")
         return "\n\n".join(parts)

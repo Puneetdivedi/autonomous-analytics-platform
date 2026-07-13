@@ -6,6 +6,7 @@ import os
 import uuid
 from pathlib import Path
 
+import anyio.to_thread
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -28,9 +29,7 @@ class DataSourceService:
         self.datasources = DataSourceRepository(session)
         self.projects = ProjectRepository(session)
 
-    async def register_connection(
-        self, data: DataSourceConnectionCreate
-    ) -> DataSource:
+    async def register_connection(self, data: DataSourceConnectionCreate) -> DataSource:
         """Register an external database connection for a project."""
         await self.projects.get_or_404(data.project_id)
         return await self.datasources.create(
@@ -95,9 +94,10 @@ class DataSourceService:
     async def introspect(self, datasource_id: str) -> DataSource:
         """Introspect and cache the data source schema.
 
-        Attempts to use the adapter factory lazily; if it is unavailable the
-        schema cache is set to an empty structure so callers get a consistent
-        shape.
+        Uses the adapter factory (imported lazily) to discover tables/columns
+        and stores them under ``schema_cache`` as ``{"tables": [...]}``. If the
+        adapter layer is not importable, an empty schema is stored so callers
+        always get a consistent shape.
         """
         ds = await self.datasources.get_or_404(datasource_id)
 
@@ -114,12 +114,19 @@ class DataSourceService:
             )
         else:
             try:
-                adapter = get_adapter(ds)
-                introspected = adapter.introspect()
-                # Support both sync and awaitable adapters.
-                if hasattr(introspected, "__await__"):
-                    introspected = await introspected  # type: ignore[assignment]
-                schema = introspected or schema
+                adapter = get_adapter(
+                    ds.type,
+                    connection_uri=ds.connection_uri,
+                    file_path=ds.file_path,
+                )
+                try:
+                    # Adapter methods are synchronous — run off the event loop.
+                    tables = await anyio.to_thread.run_sync(adapter.introspect_schema)
+                finally:
+                    adapter.close()
+                schema = {"tables": [t.model_dump() for t in tables]}
+            except DataSourceError:
+                raise
             except Exception as exc:  # noqa: BLE001
                 logger.warning(
                     "datasource.introspect.failed",

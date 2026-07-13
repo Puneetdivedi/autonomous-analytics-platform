@@ -113,9 +113,7 @@ def correlations(df: pd.DataFrame, *, threshold: float = 0.0) -> list[Correlatio
             coeff = _finite(matrix.iloc[i, j])
             if coeff is None or abs(coeff) < threshold:
                 continue
-            pairs.append(
-                Correlation(a=str(cols[i]), b=str(cols[j]), coefficient=coeff)
-            )
+            pairs.append(Correlation(a=str(cols[i]), b=str(cols[j]), coefficient=coeff))
     return pairs
 
 
@@ -158,9 +156,7 @@ def forecast(series: pd.Series | list[float], horizon: int = 5) -> Forecast:
         name = str(series.name or "series")
         values = pd.to_numeric(series, errors="coerce").dropna().to_numpy(dtype=float)
     else:
-        values = np.array(
-            [v for v in (_finite(x) for x in series) if v is not None], dtype=float
-        )
+        values = np.array([v for v in (_finite(x) for x in series) if v is not None], dtype=float)
 
     if len(values) < 2:
         raise DataSourceError("Not enough data points to forecast.")
@@ -170,9 +166,7 @@ def forecast(series: pd.Series | list[float], horizon: int = 5) -> Forecast:
         slope, intercept = np.polyfit(idx, values, 1)
         future_idx = np.arange(len(values), len(values) + horizon, dtype=float)
         predictions = slope * future_idx + intercept
-        forecast_values = [
-            _finite(v) or 0.0 for v in predictions.tolist()
-        ]
+        forecast_values = [_finite(v) or 0.0 for v in predictions.tolist()]
         return Forecast(
             column=name,
             horizon=horizon,
@@ -210,8 +204,7 @@ def detect_trends(df: pd.DataFrame) -> list[str]:
     for corr in correlations(df, threshold=0.7):
         strength = "strong positive" if corr.coefficient > 0 else "strong negative"
         trends.append(
-            f"'{corr.a}' and '{corr.b}' have a {strength} correlation "
-            f"({corr.coefficient:.2f})."
+            f"'{corr.a}' and '{corr.b}' have a {strength} correlation ({corr.coefficient:.2f})."
         )
     return trends
 

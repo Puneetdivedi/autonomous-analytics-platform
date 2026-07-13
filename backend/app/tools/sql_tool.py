@@ -135,7 +135,7 @@ def run_sql(
             result = conn.execute(text(limited))
             columns = list(result.keys())
             rows = [
-                {col: _coerce(val) for col, val in zip(columns, row)}
+                {col: _coerce(val) for col, val in zip(columns, row, strict=False)}
                 for row in result.fetchall()
             ]
         log.info("sql_executed", row_count=len(rows), columns=len(columns))

@@ -46,9 +46,7 @@ class ProjectService:
             owner_id=user.id,
         )
 
-    async def update(
-        self, project_id: str, data: ProjectUpdate, user: User
-    ) -> Project:
+    async def update(self, project_id: str, data: ProjectUpdate, user: User) -> Project:
         """Update a project after verifying access."""
         project = await self.get(project_id, user)
         changes = data.model_dump(exclude_unset=True)

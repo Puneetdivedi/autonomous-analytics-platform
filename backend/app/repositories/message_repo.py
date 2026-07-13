@@ -13,10 +13,6 @@ class MessageRepository(BaseRepository[Message]):
 
     async def list_for_chat(self, chat_id: str) -> list[Message]:
         """Return all messages in ``chat_id`` in chronological order."""
-        stmt = (
-            select(Message)
-            .where(Message.chat_id == chat_id)
-            .order_by(Message.created_at.asc())
-        )
+        stmt = select(Message).where(Message.chat_id == chat_id).order_by(Message.created_at.asc())
         result = await self.session.execute(stmt)
         return list(result.scalars().all())

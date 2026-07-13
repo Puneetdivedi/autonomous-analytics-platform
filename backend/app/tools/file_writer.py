@@ -33,9 +33,7 @@ def resolve_path(path: str | Path, base: Base = "report") -> Path:
     try:
         target.relative_to(base_dir)
     except ValueError as exc:
-        raise DataSourceError(
-            f"Refusing to write outside '{base}' directory: {target}"
-        ) from exc
+        raise DataSourceError(f"Refusing to write outside '{base}' directory: {target}") from exc
     return target
 
 

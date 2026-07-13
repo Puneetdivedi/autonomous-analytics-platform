@@ -44,9 +44,7 @@ async def app_error_handler(request: Request, exc: AppError) -> JSONResponse:
     )
 
 
-async def validation_error_handler(
-    request: Request, exc: RequestValidationError
-) -> JSONResponse:
+async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     """Return a 422 with the validation error details."""
     return JSONResponse(
         status_code=422,
@@ -58,9 +56,7 @@ async def validation_error_handler(
     )
 
 
-async def http_exception_handler(
-    request: Request, exc: StarletteHTTPException
-) -> JSONResponse:
+async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Normalise Starlette/FastAPI HTTPExceptions to the shared error shape."""
     detail = exc.detail if isinstance(exc.detail, str) else "HTTP error"
     return JSONResponse(

@@ -44,7 +44,7 @@ class DataSourceAdapter(ABC):
         """Release any held resources (engines, connections). No-op by default."""
         return None
 
-    def __enter__(self) -> "DataSourceAdapter":
+    def __enter__(self) -> DataSourceAdapter:
         return self
 
     def __exit__(self, *_exc: object) -> None:

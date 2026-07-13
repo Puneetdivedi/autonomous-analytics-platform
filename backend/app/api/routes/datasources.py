@@ -28,15 +28,11 @@ def _infer_type(filename: str, explicit: str | None) -> DataSourceType:
         try:
             return DataSourceType(explicit.lower())
         except ValueError as exc:
-            raise DataSourceError(
-                f"Unsupported data source type: {explicit}"
-            ) from exc
+            raise DataSourceError(f"Unsupported data source type: {explicit}") from exc
     suffix = Path(filename).suffix.lower()
     inferred = _EXTENSION_TYPES.get(suffix)
     if inferred is None:
-        raise DataSourceError(
-            f"Cannot infer data source type from file '{filename}'"
-        )
+        raise DataSourceError(f"Cannot infer data source type from file '{filename}'")
     return inferred
 
 

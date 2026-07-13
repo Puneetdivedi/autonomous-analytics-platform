@@ -14,9 +14,7 @@ class ProjectRepository(BaseRepository[Project]):
     async def list_for_owner(self, owner_id: str) -> list[Project]:
         """Return all projects owned by ``owner_id`` newest first."""
         stmt = (
-            select(Project)
-            .where(Project.owner_id == owner_id)
-            .order_by(Project.created_at.desc())
+            select(Project).where(Project.owner_id == owner_id).order_by(Project.created_at.desc())
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all())

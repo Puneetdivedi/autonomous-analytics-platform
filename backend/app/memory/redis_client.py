@@ -18,10 +18,10 @@ if TYPE_CHECKING:
 
 logger = get_logger(__name__)
 
-_client: "Redis | None" = None
+_client: Redis | None = None
 
 
-def get_redis() -> "Redis | None":
+def get_redis() -> Redis | None:
     """Return the shared async Redis client, or ``None`` if construction fails."""
     global _client
     if _client is not None:

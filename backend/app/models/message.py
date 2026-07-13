@@ -30,7 +30,7 @@ class Message(Base, UUIDMixin, TimestampMixin):
     # LangFuse trace id linking this turn to its full agent trace.
     trace_id: Mapped[str | None] = mapped_column(Text)
 
-    chat: Mapped["Chat"] = relationship(back_populates="messages")
-    executions: Mapped[list["AgentExecution"]] = relationship(
+    chat: Mapped[Chat] = relationship(back_populates="messages")
+    executions: Mapped[list[AgentExecution]] = relationship(
         back_populates="message", cascade="all, delete-orphan"
     )

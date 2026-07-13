@@ -35,10 +35,6 @@ class ChartGeneratorAgent(BaseAgent[ChartPlan]):
             + json.dumps(sample, default=str)[:4000]
         )
         if statistics:
-            parts.append(
-                "Statistics context:\n" + json.dumps(statistics, default=str)[:3000]
-            )
-        parts.append(
-            "Return a ChartPlan with 1-3 focused charts using only these columns."
-        )
+            parts.append("Statistics context:\n" + json.dumps(statistics, default=str)[:3000])
+        parts.append("Return a ChartPlan with 1-3 focused charts using only these columns.")
         return "\n\n".join(parts)

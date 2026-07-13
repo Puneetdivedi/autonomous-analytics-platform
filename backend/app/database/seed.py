@@ -19,7 +19,7 @@ from app.repositories.user_repo import UserRepository
 
 logger = get_logger(__name__)
 
-ADMIN_EMAIL = "admin@eaap.local"
+ADMIN_EMAIL = "admin@eaap.io"
 ADMIN_PASSWORD = "Admin123!"  # noqa: S105 — dev seed credential
 SAMPLE_PROJECT_NAME = "Sample Project"
 

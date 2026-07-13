@@ -45,7 +45,5 @@ def get_agent(name: str) -> BaseAgent:
     try:
         agent_cls = AGENTS[name]
     except KeyError as exc:
-        raise KeyError(
-            f"Unknown agent '{name}'. Registered: {sorted(AGENTS)}"
-        ) from exc
+        raise KeyError(f"Unknown agent '{name}'. Registered: {sorted(AGENTS)}") from exc
     return agent_cls()

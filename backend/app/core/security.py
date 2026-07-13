@@ -6,23 +6,32 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from app.core.config import settings
 from app.core.exceptions import AuthenticationError
 
-_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 TokenType = Literal["access", "refresh"]
+
+# bcrypt operates on the first 72 bytes of the password; longer inputs must be
+# truncated explicitly (newer bcrypt raises instead of silently truncating).
+_BCRYPT_MAX_BYTES = 72
+
+
+def _prepare(password: str) -> bytes:
+    return password.encode("utf-8")[:_BCRYPT_MAX_BYTES]
 
 
 def hash_password(password: str) -> str:
-    return _pwd_context.hash(password)
+    return bcrypt.hashpw(_prepare(password), bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return _pwd_context.verify(plain, hashed)
+    try:
+        return bcrypt.checkpw(_prepare(plain), hashed.encode("utf-8"))
+    except (ValueError, TypeError):
+        return False
 
 
 def _create_token(
@@ -65,9 +74,7 @@ def create_refresh_token(subject: str) -> str:
 def decode_token(token: str, *, expected_type: TokenType | None = None) -> dict[str, Any]:
     """Decode & validate a JWT. Raises :class:`AuthenticationError` on failure."""
     try:
-        payload = jwt.decode(
-            token, settings.secret_key, algorithms=[settings.jwt_algorithm]
-        )
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.jwt_algorithm])
     except JWTError as exc:  # noqa: BLE001
         raise AuthenticationError("Could not validate credentials") from exc
 

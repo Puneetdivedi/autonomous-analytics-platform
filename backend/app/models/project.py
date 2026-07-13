@@ -25,13 +25,11 @@ class Project(Base, UUIDMixin, TimestampMixin):
         ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
     )
 
-    owner: Mapped["User"] = relationship(back_populates="projects")
-    data_sources: Mapped[list["DataSource"]] = relationship(
+    owner: Mapped[User] = relationship(back_populates="projects")
+    data_sources: Mapped[list[DataSource]] = relationship(
         back_populates="project", cascade="all, delete-orphan"
     )
-    chats: Mapped[list["Chat"]] = relationship(
-        back_populates="project", cascade="all, delete-orphan"
-    )
-    reports: Mapped[list["Report"]] = relationship(
+    chats: Mapped[list[Chat]] = relationship(back_populates="project", cascade="all, delete-orphan")
+    reports: Mapped[list[Report]] = relationship(
         back_populates="project", cascade="all, delete-orphan"
     )

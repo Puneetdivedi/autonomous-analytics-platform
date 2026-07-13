@@ -34,13 +34,13 @@ class LongTermMemory:
         self._collection = collection
         self._use_openai = bool(settings.openai_api_key)
         self._dim = _OPENAI_DIM if self._use_openai else _FALLBACK_DIM
-        self._client: "AsyncQdrantClient | None" = None
+        self._client: AsyncQdrantClient | None = None
         self._embedder: Any | None = None
         self._collection_ready = False
 
     # --- Client / collection ------------------------------------------------
 
-    def _get_client(self) -> "AsyncQdrantClient | None":
+    def _get_client(self) -> AsyncQdrantClient | None:
         if self._client is not None:
             return self._client
         try:
@@ -56,7 +56,7 @@ class LongTermMemory:
             logger.warning("qdrant_client_unavailable", error=str(exc))
             return None
 
-    async def _ensure_collection(self, client: "AsyncQdrantClient") -> bool:
+    async def _ensure_collection(self, client: AsyncQdrantClient) -> bool:
         if self._collection_ready:
             return True
         try:
@@ -84,7 +84,7 @@ class LongTermMemory:
         vector = [0.0] * self._dim
         # Expand a SHA-256 digest into ``_dim`` float components.
         for i in range(self._dim):
-            digest = hashlib.sha256(f"{i}:{text}".encode("utf-8")).digest()
+            digest = hashlib.sha256(f"{i}:{text}".encode()).digest()
             # Map first 4 bytes to a float in [-1, 1).
             raw = int.from_bytes(digest[:4], "big")
             vector[i] = (raw / 0xFFFFFFFF) * 2.0 - 1.0
@@ -115,9 +115,7 @@ class LongTermMemory:
 
     # --- Public API ----------------------------------------------------------
 
-    async def add(
-        self, namespace: str, text: str, metadata: dict[str, Any] | None = None
-    ) -> bool:
+    async def add(self, namespace: str, text: str, metadata: dict[str, Any] | None = None) -> bool:
         """Embed and store ``text`` under ``namespace``. Returns success."""
         if not text or not text.strip():
             return False
@@ -133,11 +131,7 @@ class LongTermMemory:
             payload = {"namespace": namespace, "text": text, **(metadata or {})}
             await client.upsert(
                 collection_name=self._collection,
-                points=[
-                    qmodels.PointStruct(
-                        id=str(uuid.uuid4()), vector=vector, payload=payload
-                    )
-                ],
+                points=[qmodels.PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload)],
             )
             logger.info("memory_added", namespace=namespace)
             return True
@@ -145,9 +139,7 @@ class LongTermMemory:
             logger.warning("memory_add_failed", namespace=namespace, error=str(exc))
             return False
 
-    async def search(
-        self, namespace: str, query: str, k: int = 5
-    ) -> list[dict[str, Any]]:
+    async def search(self, namespace: str, query: str, k: int = 5) -> list[dict[str, Any]]:
         """Return up to ``k`` items in ``namespace`` similar to ``query``."""
         if not query or not query.strip():
             return []
@@ -179,9 +171,7 @@ class LongTermMemory:
                 payload = dict(hit.payload or {})
                 text = payload.pop("text", "")
                 payload.pop("namespace", None)
-                results.append(
-                    {"text": text, "metadata": payload, "score": float(hit.score)}
-                )
+                results.append({"text": text, "metadata": payload, "score": float(hit.score)})
             logger.info("memory_search", namespace=namespace, hits=len(results))
             return results
         except Exception as exc:  # noqa: BLE001

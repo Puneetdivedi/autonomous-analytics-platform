@@ -14,9 +14,7 @@ class AuditLogRepository(BaseRepository[AuditLog]):
     async def list_for_user(self, user_id: str) -> list[AuditLog]:
         """Return audit log entries for ``user_id`` newest first."""
         stmt = (
-            select(AuditLog)
-            .where(AuditLog.user_id == user_id)
-            .order_by(AuditLog.created_at.desc())
+            select(AuditLog).where(AuditLog.user_id == user_id).order_by(AuditLog.created_at.desc())
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all())

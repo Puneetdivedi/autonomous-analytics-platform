@@ -33,33 +33,23 @@ class SupervisorAgent(BaseAgent[Plan]):
         parts = [f"User question:\n{question}"]
         if intent:
             parts.append("Detected intent:\n" + json.dumps(intent, default=str))
+        parts.append("Current plan:\n" + json.dumps(state.get("plan", []), default=str)[:3000])
         parts.append(
-            "Current plan:\n" + json.dumps(state.get("plan", []), default=str)[:3000]
-        )
-        parts.append(
-            "Completed tasks:\n"
-            + json.dumps(state.get("completed_tasks", []), default=str)
+            "Completed tasks:\n" + json.dumps(state.get("completed_tasks", []), default=str)
         )
         parts.append(f"Current task: {state.get('current_task', '')}")
         parts.append(
-            "Relevant tables:\n"
-            + json.dumps(state.get("relevant_tables", []), default=str)
+            "Relevant tables:\n" + json.dumps(state.get("relevant_tables", []), default=str)
         )
-        parts.append(
-            f"sql_valid={state.get('sql_valid')} row_count={state.get('row_count', 0)}"
-        )
+        parts.append(f"sql_valid={state.get('sql_valid')} row_count={state.get('row_count', 0)}")
         if state.get("reflection"):
             parts.append(
-                "Latest reflection:\n"
-                + json.dumps(state["reflection"], default=str)[:2000]
+                "Latest reflection:\n" + json.dumps(state["reflection"], default=str)[:2000]
             )
         parts.append(
-            f"retry_count={state.get('retry_count', 0)} "
-            f"max_retries={state.get('max_retries', 0)}"
+            f"retry_count={state.get('retry_count', 0)} max_retries={state.get('max_retries', 0)}"
         )
         if state.get("errors"):
-            parts.append(
-                "Recent errors:\n" + json.dumps(state["errors"], default=str)[:2000]
-            )
+            parts.append("Recent errors:\n" + json.dumps(state["errors"], default=str)[:2000])
         parts.append("Return the updated Plan of remaining steps.")
         return "\n\n".join(parts)

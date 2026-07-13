@@ -64,9 +64,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             try:
                 import redis.asyncio as aioredis  # noqa: PLC0415
 
-                self._redis = aioredis.from_url(
-                    redis_url, encoding="utf-8", decode_responses=True
-                )
+                self._redis = aioredis.from_url(redis_url, encoding="utf-8", decode_responses=True)
             except Exception as exc:  # noqa: BLE001
                 logger.warning("rate_limit.redis_unavailable", error=str(exc))
                 self._redis = None
@@ -92,9 +90,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             logger.warning("rate_limit.redis_error", error=str(exc))
             return None
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         if any(request.url.path.startswith(p) for p in self.exempt_paths):
             return await call_next(request)
 

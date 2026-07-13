@@ -25,26 +25,20 @@ async def list_projects(db: DbSession, user: ActiveUser) -> list[ProjectRead]:
     status_code=status.HTTP_201_CREATED,
     summary="Create a project",
 )
-async def create_project(
-    payload: ProjectCreate, db: DbSession, user: ActiveUser
-) -> ProjectRead:
+async def create_project(payload: ProjectCreate, db: DbSession, user: ActiveUser) -> ProjectRead:
     """Create a new project owned by the current user."""
     project = await ProjectService(db).create(payload, user)
     return ProjectRead.model_validate(project)
 
 
 @router.get("/{project_id}", response_model=ProjectRead, summary="Get a project")
-async def get_project(
-    project_id: str, db: DbSession, user: ActiveUser
-) -> ProjectRead:
+async def get_project(project_id: str, db: DbSession, user: ActiveUser) -> ProjectRead:
     """Fetch a single project the user can access."""
     project = await ProjectService(db).get(project_id, user)
     return ProjectRead.model_validate(project)
 
 
-@router.patch(
-    "/{project_id}", response_model=ProjectRead, summary="Update a project"
-)
+@router.patch("/{project_id}", response_model=ProjectRead, summary="Update a project")
 async def update_project(
     project_id: str,
     payload: ProjectUpdate,
@@ -56,12 +50,8 @@ async def update_project(
     return ProjectRead.model_validate(project)
 
 
-@router.delete(
-    "/{project_id}", response_model=Message, summary="Delete a project"
-)
-async def delete_project(
-    project_id: str, db: DbSession, user: ActiveUser
-) -> Message:
+@router.delete("/{project_id}", response_model=Message, summary="Delete a project")
+async def delete_project(project_id: str, db: DbSession, user: ActiveUser) -> Message:
     """Delete a project the user can access."""
     await ProjectService(db).delete(project_id, user)
     return Message(detail="Project deleted")

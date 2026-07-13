@@ -24,9 +24,7 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         self.header_name = header_name
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         request_id = request.headers.get(self.header_name) or str(uuid.uuid4())
 
         structlog.contextvars.clear_contextvars()

@@ -16,7 +16,9 @@ from app.core.logging import get_logger
 logger = get_logger(__name__)
 
 
-async def remember(namespace: str, key: str, value: str, *, metadata: dict[str, Any] | None = None) -> bool:
+async def remember(
+    namespace: str, key: str, value: str, *, metadata: dict[str, Any] | None = None
+) -> bool:
     """Persist a memory item for later semantic recall.
 
     Stores ``value`` under ``namespace`` in the long-term (vector) store. The

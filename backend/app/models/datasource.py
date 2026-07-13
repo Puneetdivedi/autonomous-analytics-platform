@@ -30,4 +30,4 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     # Cached, introspected schema: {table: [{name, type, nullable}, ...]}
     schema_cache: Mapped[dict | None] = mapped_column(JSON)
 
-    project: Mapped["Project"] = relationship(back_populates="data_sources")
+    project: Mapped[Project] = relationship(back_populates="data_sources")

@@ -64,9 +64,7 @@ class FileDataSourceAdapter(DataSourceAdapter):
         elif self._type == DataSourceType.EXCEL:
             self._df = load_excel(self._path, sheet=self._sheet)
         else:
-            raise DataSourceError(
-                f"FileDataSourceAdapter does not support type '{self._type}'."
-            )
+            raise DataSourceError(f"FileDataSourceAdapter does not support type '{self._type}'.")
         return self._df
 
     def _get_engine(self) -> Engine:
@@ -82,9 +80,7 @@ class FileDataSourceAdapter(DataSourceAdapter):
             )
             df.to_sql(self._table, engine, index=False, if_exists="replace")
             self._engine = engine
-            logger.info(
-                "file_registered_in_sqlite", table=self._table, rows=len(df)
-            )
+            logger.info("file_registered_in_sqlite", table=self._table, rows=len(df))
             return engine
         except Exception as exc:  # noqa: BLE001
             logger.error("file_sqlite_register_failed", error=str(exc))

@@ -22,8 +22,8 @@ class Chat(Base, UUIDMixin, TimestampMixin):
     )
     title: Mapped[str] = mapped_column(String(255), default="New chat", nullable=False)
 
-    project: Mapped["Project"] = relationship(back_populates="chats")
-    messages: Mapped[list["Message"]] = relationship(
+    project: Mapped[Project] = relationship(back_populates="chats")
+    messages: Mapped[list[Message]] = relationship(
         back_populates="chat",
         cascade="all, delete-orphan",
         order_by="Message.created_at",

@@ -29,9 +29,7 @@ logger = get_logger(__name__)
 _SUPPORTED = {"bar", "line", "pie", "scatter", "histogram", "heatmap", "area"}
 
 
-def build_chart_data(
-    df: pd.DataFrame, x: str, y: str | list[str]
-) -> list[dict[str, Any]]:
+def build_chart_data(df: pd.DataFrame, x: str, y: str | list[str]) -> list[dict[str, Any]]:
     """Build Recharts-friendly records: ``[{x: v, y1: v, y2: v}, ...]``."""
     if df is None or df.empty:
         return []
@@ -54,7 +52,7 @@ def _y_columns(spec: ChartSpec) -> list[str]:
     return [spec.y] if isinstance(spec.y, str) else list(spec.y)
 
 
-def _render(spec: ChartSpec, ax: "plt.Axes", df: pd.DataFrame) -> None:
+def _render(spec: ChartSpec, ax: plt.Axes, df: pd.DataFrame) -> None:
     """Draw the chart described by ``spec`` onto ``ax``."""
     chart_type = spec.type
     x = spec.x

@@ -37,4 +37,4 @@ class AgentExecution(Base, UUIDMixin, TimestampMixin):
     output_payload: Mapped[dict | None] = mapped_column(JSON)
     error: Mapped[str | None] = mapped_column(Text)
 
-    message: Mapped["Message"] = relationship(back_populates="executions")
+    message: Mapped[Message] = relationship(back_populates="executions")

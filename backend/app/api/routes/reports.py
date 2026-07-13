@@ -14,12 +14,8 @@ router = APIRouter(tags=["reports"])
 
 _MEDIA_TYPES = {
     ReportFormat.PDF: "application/pdf",
-    ReportFormat.DOCX: (
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ),
-    ReportFormat.XLSX: (
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ),
+    ReportFormat.DOCX: ("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+    ReportFormat.XLSX: ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
 }
 
 
