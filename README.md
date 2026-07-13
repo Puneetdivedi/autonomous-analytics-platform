@@ -315,12 +315,21 @@ pytest --cov=app           # coverage
 
 ## Deployment Guide
 
-1. Provision Postgres, Redis, Qdrant (managed or containers).
-2. Set production env vars (never commit `.env`).
-3. `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d`.
-4. Run `alembic upgrade head` on release.
-5. Put the API behind a reverse proxy (TLS termination) and the SPA behind a CDN.
-6. Point `LANGFUSE_HOST` at your LangFuse instance for tracing.
+Full instructions: **[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)**.
+
+The platform deploys as two services:
+
+- **Frontend → Vercel.** The Vite SPA has a committed
+  [`frontend/vercel.json`](frontend/vercel.json); import the repo with
+  **Root Directory = `frontend`** and set `VITE_API_BASE_URL` to your backend
+  URL. Optional auto-deploy workflow at
+  [`.github/workflows/deploy-frontend.yml`](.github/workflows/deploy-frontend.yml).
+- **Backend → container.** Build [`backend/Dockerfile`](backend/Dockerfile) and
+  run it on Fly.io / Render / Railway / a VM with managed Postgres, Redis and
+  Qdrant; set `BACKEND_CORS_ORIGINS` to the Vercel domain. Migrations run on
+  boot (`alembic upgrade head`).
+
+Single-host demo: `docker compose up --build` (see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)).
 
 ---
 
