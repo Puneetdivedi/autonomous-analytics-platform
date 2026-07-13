@@ -127,6 +127,29 @@ service), **Railway**, or any VM/orchestrator. Point the frontend's
 
 ---
 
+## 4. Hosting the static demo pages
+
+`docs/index.html`, `docs/analyzer.html` and `docs/dashboard.html` are **fully
+self-contained** (all CSS/JS inline, no external requests) — they run on any
+static host. Pick one:
+
+| Host | How | Cost |
+|---|---|---|
+| **GitHub Pages** (recommended) | Push repo → **Settings → Pages → Source = GitHub Actions**. The included [`deploy-pages.yml`](../.github/workflows/deploy-pages.yml) publishes `docs/` on every push. URL: `https://<user>.github.io/<repo>/analyzer.html` | Free |
+| **Netlify** | Drag the `docs/` folder onto [app.netlify.com/drop](https://app.netlify.com/drop) — instant URL, no repo needed | Free |
+| **Cloudflare Pages** | Connect the repo, set **build output directory = `docs`**, no build command | Free |
+| **Vercel** | New project → set **Root Directory = `docs`**, framework "Other", no build step | Free |
+
+The **working app** (`analyzer.html`) does all parsing, aggregation, statistics
+and charting **in the browser**, so it needs no server. The **full product** (with
+the LLM agents, Postgres persistence and multi-user auth) is the FastAPI backend +
+React frontend in sections 1–3.
+
+> These demos were **not** hosted on Claude; if you previously published them as
+> Claude Artifacts, remove them at `claude.ai/code/artifacts`.
+
+---
+
 ## Quick all-in-one (single host, no Vercel)
 
 For a demo on one machine, skip Vercel and run everything with Docker Compose:

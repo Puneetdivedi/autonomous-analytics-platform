@@ -6,8 +6,16 @@
 > queries, running statistics, generating charts, producing insights, recommending
 > actions, and generating downloadable reports — with full LangFuse observability.
 
-**🔗 Live dashboard:** https://claude.ai/code/artifact/83dc89ba-8044-49a9-a701-cede28317062
-— a hosted observability snapshot of a real traced run (source: [`docs/dashboard.html`](docs/dashboard.html)).
+**🔗 Live demos (self-contained, no backend / no API key).** Two static pages you can
+host on any static host — a GitHub Pages workflow is included
+([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)):
+
+- **Working app** — upload a CSV and watch the pipeline run: [`docs/analyzer.html`](docs/analyzer.html)
+- **Observability dashboard** — snapshot of a traced run: [`docs/dashboard.html`](docs/dashboard.html)
+
+Once GitHub Pages is enabled, they're served at
+`https://<your-user>.github.io/<repo>/analyzer.html` and `/dashboard.html`.
+See [Hosting the demos](docs/DEPLOYMENT.md#4-hosting-the-static-demo-pages).
 
 ---
 
