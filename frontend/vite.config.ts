@@ -18,4 +18,18 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
+  build: {
+    // Split large third-party libraries into separately-cached vendor chunks so
+    // the initial load is smaller and dependency updates don't bust the app chunk.
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'query-vendor': ['@tanstack/react-query', 'axios'],
+          'chart-vendor': ['recharts'],
+          'markdown-vendor': ['react-markdown', 'remark-gfm', 'react-syntax-highlighter'],
+        },
+      },
+    },
+  },
 });
