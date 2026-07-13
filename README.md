@@ -6,6 +6,9 @@
 > queries, running statistics, generating charts, producing insights, recommending
 > actions, and generating downloadable reports — with full LangFuse observability.
 
+**🔗 Live dashboard:** https://claude.ai/code/artifact/83dc89ba-8044-49a9-a701-cede28317062
+— a hosted observability snapshot of a real traced run (source: [`docs/dashboard.html`](docs/dashboard.html)).
+
 ---
 
 ## Table of Contents
