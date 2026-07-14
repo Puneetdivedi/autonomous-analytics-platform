@@ -107,6 +107,13 @@ class AnalyticsService:
             schema=schema,
             memory={"datasource": datasource} if datasource else {},
         )
+        # Tell the SQL agent which dialect it is actually targeting. Uploaded
+        # files (CSV/Excel) are queried via an in-memory SQLite engine, so the
+        # agent must write SQLite-compatible SQL, not Postgres.
+        if datasource:
+            state["sql_dialect"] = {"postgres": "postgresql", "mysql": "mysql"}.get(
+                datasource.get("type", ""), "sqlite"
+            )
 
         final_state: dict[str, Any] = dict(state)
         async for evt in run_graph(state):

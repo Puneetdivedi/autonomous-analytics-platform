@@ -6,24 +6,30 @@
 > queries, running statistics, generating charts, producing insights, recommending
 > actions, and generating downloadable reports — with full LangFuse observability.
 
-**🔗 Live demos** (hosted on GitHub Pages — self-contained, no backend / no API key):
+## 🌐 Live Deployment
 
-- **▶ Working app** — upload a CSV and watch the pipeline run:
-  **https://puneetdivedi.github.io/autonomous-analytics-platform/analyzer.html**
-- **📊 Observability dashboard** — snapshot of a traced run:
-  **https://puneetdivedi.github.io/autonomous-analytics-platform/dashboard.html**
-- **Landing page:** https://puneetdivedi.github.io/autonomous-analytics-platform/
-- **🚀 Full app, fully wired (Vercel):** https://autonomous-analytics-frontend.vercel.app
-  — the real product UI, connected to a live serverless backend
-  (https://autonomous-analytics-backend.vercel.app). Opens with no sign-in
-  (auto guest) and runs the complete 13-agent pipeline in keyless `stub` mode.
-  _Free-tier notes: first request has a ~10 s cold start; the demo DB is
-  ephemeral SQLite (data resets on redeploy). Add `OPENAI_API_KEY` +
-  `LLM_PROVIDER=openai` in the backend project for real LLM answers._
+Deployed and free to use — **no installation, no sign-in.**
 
-Auto-deployed on every push via
-[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
-Sources: [`docs/analyzer.html`](docs/analyzer.html), [`docs/dashboard.html`](docs/dashboard.html).
+| Resource | Link |
+|---|---|
+| **▶ Full application** — React UI + multi-agent backend, real LLM answers | **https://autonomous-analytics-frontend.vercel.app** |
+| **API** — interactive OpenAPI docs | https://autonomous-analytics-backend.vercel.app/docs |
+| **Standalone analyzer** — runs entirely in your browser, zero backend | https://puneetdivedi.github.io/autonomous-analytics-platform/analyzer.html |
+| **Observability dashboard** — snapshot of a traced agent run | https://puneetdivedi.github.io/autonomous-analytics-platform/dashboard.html |
+| **Demos landing page** | https://puneetdivedi.github.io/autonomous-analytics-platform/ |
+| **Source code** | https://github.com/Puneetdivedi/autonomous-analytics-platform |
+
+**How to use:** open the app → you land straight in (guest session, no login) →
+go to **Chat** → upload a CSV → ask a question such as _“Why did revenue decrease
+in North America last month?”_ → watch the agents plan, generate & validate SQL,
+execute it, run statistics, build charts, and explain the findings live.
+
+**Production stack (100% free tier):** frontend on **Vercel** · serverless FastAPI
+backend on **Vercel** · persistent **PostgreSQL on Neon** · LLM via **Groq**
+(`llama-3.3-70b-versatile`) · demo pages on **GitHub Pages**. Every push to `main`
+auto-deploys both apps. The first request after idle has a ~10 s cold start
+(free-tier). Swap `GROQ_API_KEY`/`LLM_PROVIDER` for OpenAI, Anthropic or Gemini
+anytime — see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ---
 
