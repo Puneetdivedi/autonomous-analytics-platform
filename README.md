@@ -351,4 +351,4 @@ Single-host demo: `docker compose up --build` (see [`docs/DEPLOYMENT.md`](docs/D
 
 ## License
 
-MIT © Acumen Strategy
+Released under the MIT License.
