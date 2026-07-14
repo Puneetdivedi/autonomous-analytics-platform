@@ -1,0 +1,12 @@
+tests
+alembic
+# Hide pyproject so Vercel installs the slim requirements.txt, not the full deps.
+pyproject.toml
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+Dockerfile
+fly.toml

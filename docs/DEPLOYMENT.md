@@ -98,6 +98,34 @@ Config at [`backend/fly.toml`](../backend/fly.toml) (Postgres attach, release-ti
 migrations, a persistent `/data` volume). Commands are in the file header:
 `fly launch --no-deploy` → `fly postgres create/attach` → `fly secrets set …` → `fly deploy`.
 
+### Option C — All-Vercel, 100% free (no card, no external DB)
+
+For a zero-cost demo with no signups beyond Vercel, the backend also runs as a
+Vercel serverless function:
+
+- [`backend/api/index.py`](../backend/api/index.py) exposes the ASGI app;
+  [`backend/vercel.json`](../backend/vercel.json) rewrites all routes to it.
+- [`backend/requirements.txt`](../backend/requirements.txt) is a **slim** dep set
+  (drops scipy/sklearn/statsmodels/redis/qdrant/LLM SDKs — all unused in stub
+  mode) to stay under the 500 MB function limit. `pyproject.toml` is hidden from
+  Vercel via `.vercelignore` so this file wins.
+- DB is **ephemeral SQLite in `/tmp`** (tables created on boot); `LLM_PROVIDER=stub`
+  needs no key.
+
+```bash
+cd backend
+vercel link --yes --project <name>
+vercel env add DATABASE_URL production   # sqlite+aiosqlite:////tmp/eaap.db
+vercel env add LLM_PROVIDER production    # stub
+vercel env add SECRET_KEY production      # a random string
+vercel env add BACKEND_CORS_ORIGINS production   # your frontend URL
+vercel deploy --prod
+```
+
+Trade-offs: cold starts (~10 s), no persistence across redeploys, and the
+statistics/agents are keyless-templated. For persistence + real LLM answers, use
+Option A/B with a managed Postgres and a provider key.
+
 ### Manual container (any host)
 
 ### Provision managed data services

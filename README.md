@@ -13,9 +13,13 @@
 - **📊 Observability dashboard** — snapshot of a traced run:
   **https://puneetdivedi.github.io/autonomous-analytics-platform/dashboard.html**
 - **Landing page:** https://puneetdivedi.github.io/autonomous-analytics-platform/
-- **🚀 Full React app (Vercel):** https://autonomous-analytics-frontend.vercel.app
-  — the real product UI. Loads standalone; set `VITE_API_BASE_URL` to a deployed
-  backend (see [Deployment](docs/DEPLOYMENT.md)) to enable login and live analysis.
+- **🚀 Full app, fully wired (Vercel):** https://autonomous-analytics-frontend.vercel.app
+  — the real product UI, connected to a live serverless backend
+  (https://autonomous-analytics-backend.vercel.app). Opens with no sign-in
+  (auto guest) and runs the complete 13-agent pipeline in keyless `stub` mode.
+  _Free-tier notes: first request has a ~10 s cold start; the demo DB is
+  ephemeral SQLite (data resets on redeploy). Add `OPENAI_API_KEY` +
+  `LLM_PROVIDER=openai` in the backend project for real LLM answers._
 
 Auto-deployed on every push via
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
