@@ -116,10 +116,9 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       }
 
+      // Sign-in is disabled: just drop the stale tokens. AuthProvider will
+      // re-provision a guest session on the next load; no login redirect.
       clearTokens();
-      if (window.location.pathname !== '/login') {
-        window.location.assign('/login');
-      }
     }
 
     return Promise.reject(error);

@@ -1,4 +1,4 @@
-import { Menu, Moon, Sun, LogOut } from 'lucide-react';
+import { Menu, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useProjects } from '@/hooks/useProjects';
@@ -9,19 +9,18 @@ interface TopbarProps {
 }
 
 export default function Topbar({ onMenuClick }: TopbarProps) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { data: projects } = useProjects();
   const { projectId, select } = useSelectedProject();
 
-  const initials = user?.full_name
-    ? user.full_name
-        .split(' ')
-        .map((p) => p[0])
-        .slice(0, 2)
-        .join('')
-        .toUpperCase()
-    : 'U';
+  const displayName = user?.full_name || 'Guest';
+  const initials = displayName
+    .split(' ')
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
@@ -73,21 +72,13 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
           </div>
           <div className="hidden text-right leading-tight sm:block">
             <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
-              {user?.full_name ?? 'User'}
+              {displayName}
             </p>
             <p className="text-[11px] capitalize text-slate-400">
-              {user?.role ?? ''}
+              guest session
             </p>
           </div>
         </div>
-
-        <button
-          onClick={logout}
-          className="rounded-md p-2 text-slate-500 hover:bg-slate-100 hover:text-red-500 dark:hover:bg-slate-800"
-          aria-label="Log out"
-        >
-          <LogOut className="h-5 w-5" />
-        </button>
       </div>
     </header>
   );
