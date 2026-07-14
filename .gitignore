@@ -23,10 +23,14 @@ frontend/dist/
 frontend/.vite/
 *.local
 
-# --- Data / uploads / reports ---
-data/
-uploads/
-reports/
+# --- Data / uploads / reports (generated output; anchored so they don't match
+#     source folders like frontend/src/components/reports) ---
+/data/
+/uploads/
+/reports/
+/backend/data/
+/backend/uploads/
+/backend/reports/
 *.pdf
 !docs/**/*.pdf
 
