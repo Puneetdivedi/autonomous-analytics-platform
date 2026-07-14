@@ -33,6 +33,13 @@ class SQLGeneratorAgent(BaseAgent[GeneratedSQL]):
                 "Relevant tables to build around:\n" + json.dumps(relevant_tables, default=str)
             )
         parts.append("Schema (tables -> columns):\n" + json.dumps(schema, default=str)[:8000])
+        parts.append(
+            "IMPORTANT — filter values: some columns include a `sample_values` list of the "
+            "ACTUAL distinct values in the data. When writing WHERE clauses you MUST use those "
+            "exact values and map the user's wording to the closest one (e.g. the user says "
+            "'North America' but the column only contains 'NA' -> filter on 'NA'). Never invent a "
+            "filter value that is not present in the data."
+        )
         # Surface reflection feedback so a retry can correct the previous query.
         reflection = state.get("reflection", {})
         if reflection.get("feedback"):
