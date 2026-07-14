@@ -8,6 +8,7 @@ keyless ``stub`` mode — see ``docs/DEPLOYMENT.md``.
 
 from __future__ import annotations
 
+# Deployed to Vercel via GitHub auto-deploy (push to main).
 import os
 
 # matplotlib needs a writable cache dir; only /tmp is writable on Vercel.

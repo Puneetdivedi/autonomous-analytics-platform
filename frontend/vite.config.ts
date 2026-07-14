@@ -1,3 +1,4 @@
+// Deployed to Vercel via GitHub auto-deploy (push to main).
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
