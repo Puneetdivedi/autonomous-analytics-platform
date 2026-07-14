@@ -14,11 +14,20 @@ export interface AuthContextValue {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
+  /** True when no backend is reachable — the app runs in local demo mode. */
+  demoMode: boolean;
   login: (payload: LoginPayload) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
+
+const LOCAL_GUEST: User = {
+  id: 'local-guest',
+  email: 'guest@demo',
+  full_name: 'Guest',
+  role: UserRole.ANALYST,
+};
 
 export const AuthContext = createContext<AuthContextValue | undefined>(
   undefined
@@ -75,38 +84,48 @@ async function ensureGuestSession(): Promise<void> {
   await authService.login({ email: creds.email, password: creds.password });
 }
 
+async function tryMe(): Promise<User | null> {
+  try {
+    return await authService.me();
+  } catch {
+    return null;
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [demoMode, setDemoMode] = useState<boolean>(false);
 
   const refreshUser = useCallback(async () => {
-    try {
-      const me = await authService.me();
-      setUser(me);
-    } catch {
-      setUser(null);
-    }
+    const me = await tryMe();
+    setUser(me);
   }, []);
 
-  // Bootstrap: reuse an existing session, otherwise auto-provision a guest.
+  // Bootstrap: reuse a session, else auto-provision a guest. If the backend is
+  // unreachable, fall back to a local guest so the app still opens (demo mode).
   const bootstrap = useCallback(async () => {
     setLoading(true);
     try {
-      if (!getAccessToken()) {
+      let me = getAccessToken() ? await tryMe() : null;
+      if (!me) {
         await ensureGuestSession();
+        me = await tryMe();
       }
-      await refreshUser();
-      // If the token was stale, refreshUser cleared the user — try one guest login.
-      if (!getAccessToken()) {
-        await ensureGuestSession();
-        await refreshUser();
+      if (me) {
+        setUser(me);
+        setDemoMode(false);
+      } else {
+        setUser(LOCAL_GUEST);
+        setDemoMode(true);
       }
     } catch {
-      setUser(null);
+      setUser(LOCAL_GUEST);
+      setDemoMode(true);
     } finally {
       setLoading(false);
     }
-  }, [refreshUser]);
+  }, []);
 
   useEffect(() => {
     void bootstrap();
@@ -144,12 +163,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       loading,
       isAuthenticated: Boolean(user),
+      demoMode,
       login,
       register,
       logout,
       refreshUser,
     }),
-    [user, loading, login, register, logout, refreshUser]
+    [user, loading, demoMode, login, register, logout, refreshUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
