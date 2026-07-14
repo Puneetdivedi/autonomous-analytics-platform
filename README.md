@@ -351,4 +351,4 @@ Single-host demo: `docker compose up --build` (see [`docs/DEPLOYMENT.md`](docs/D
 
 ## License
 
-Released under the MIT License.
+MIT © 2026 Puneet Divedi — see [LICENSE](LICENSE).
