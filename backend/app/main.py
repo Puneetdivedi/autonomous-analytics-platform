@@ -34,14 +34,15 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     logger.info("app_startup", environment=settings.environment, version=__version__)
-    # Serverless / SQLite deployments have no Alembic step — create tables on boot.
-    if settings.database_url.startswith("sqlite"):
+    # Serverless deployments have no Alembic step — ensure tables exist on boot.
+    # create_all is idempotent (checkfirst), so this is safe on Postgres too.
+    if settings.database_url.startswith(("sqlite", "postgresql")):
         try:
             async with engine.begin() as conn:
                 await conn.run_sync(Base.metadata.create_all)
-            logger.info("sqlite_schema_ready")
+            logger.info("schema_ready")
         except Exception as exc:  # noqa: BLE001
-            logger.warning("sqlite_schema_init_failed", error=str(exc))
+            logger.warning("schema_init_failed", error=str(exc))
     yield
     shutdown_langfuse()
     logger.info("app_shutdown")
